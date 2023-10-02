@@ -25,8 +25,8 @@ namespace learningProcess1.Areas.Admin.Controllers
             List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
             return View(objProductList);
         }
-        
-        public IActionResult Upsert(int? id)
+
+		public IActionResult Upsert(int? id)
         {
             ProductVM productVM = new()
             {

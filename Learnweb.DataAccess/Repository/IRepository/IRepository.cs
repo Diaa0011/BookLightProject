@@ -16,6 +16,8 @@ namespace Learnweb.DataAccess.Repository.IRepository
         void Update(T entity);
         void Remove(T entity);
         void RemoveRange(T entity);
+        
+        
 
 
     }

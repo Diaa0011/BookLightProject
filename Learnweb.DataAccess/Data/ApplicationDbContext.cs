@@ -1,10 +1,11 @@
 ﻿using Learnweb.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 namespace Learnweb.DataAccess.Data
 {
-    public class ApplicationDbContext: DbContext
-    {
+	public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+	{
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
         }
@@ -12,6 +13,7 @@ namespace Learnweb.DataAccess.Data
         public DbSet<Product> products { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
+            base.OnModelCreating(modelbuilder);
             modelbuilder.Entity<Category>().HasData(
                     new Category { Id=1, Name="Action", DisplayOrder=1 },
                     new Category { Id=2, Name="SciFi", DisplayOrder=2 },
