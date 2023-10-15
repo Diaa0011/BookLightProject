@@ -7,10 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Specialized;
+using Learnweb.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace learningProcess1.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
+
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -49,27 +53,11 @@ namespace learningProcess1.Areas.Admin.Controllers
             }
 
         }
-
-        public IActionResult Create()
-        {
-            ProductVM productVM = new()
-            {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                }),
-                Product = new Product()
-            };
-            return View(productVM);
-        }
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM,IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                try
-                    {
                     string wwwRootPath = _webHostEnivronment.WebRootPath;
                     if (file != null)
                     {
@@ -91,23 +79,20 @@ namespace learningProcess1.Areas.Admin.Controllers
                         }
                         productVM.Product.ImageUrl = @"\images\product\" + fileName;
                     }
-                }catch(Exception ex)
-                {
-                    Console.WriteLine("Error in uploading image");
-                }
+                
                 if(productVM.Product.Id==0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
+                    TempData["success"] = "Product created successfully";
                 }
                 else
                 {
                     _unitOfWork.Product.Update(productVM.Product);
+                    TempData["success"] = "Product updated successfully";
                 }
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
                }
-            
             else
             {
                 productVM.CategoryList = _unitOfWork.Category

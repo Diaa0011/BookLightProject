@@ -2,6 +2,11 @@ using Learnweb.DataAccess.Repository.IRepository;
 using Learnweb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Learnweb.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace learningProcess1.Areas.Customer.Controllers
 {
@@ -24,11 +29,47 @@ namespace learningProcess1.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-			Product product = _unitOfWork.Product.Get(u => u.Id == productId,includeProperties: "Category");
-            return View(product);
+            ShoppingCart cart = new()
+            {
+                Product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = productId
+            };
+            return View(cart);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb != null)
+            {
+                //shopping cart exists
+                cartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
+            }
+            else
+            {
+                //adding new shopping cart record
+             
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId).Count);
+
+            }
+            TempData["success"] = "Cart updated Successfully";
+
+            return RedirectToAction(nameof(Index));
         }
 
-		public IActionResult Privacy()
+        public IActionResult Privacy()
         {
             return View();
         }
