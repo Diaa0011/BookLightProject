@@ -23,6 +23,13 @@ namespace learningProcess1.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim!=null)
+            {
+                HttpContext.Session.SetInt32(SD.SessionCart,
+               _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+            }
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties:"Category");
             return View(productList);
         }
@@ -61,9 +68,9 @@ namespace learningProcess1.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
                 _unitOfWork.Save();
                 HttpContext.Session.SetInt32(SD.SessionCart,
-                _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId).Count);
-
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
             }
+            
             TempData["success"] = "Cart updated Successfully";
 
             return RedirectToAction(nameof(Index));

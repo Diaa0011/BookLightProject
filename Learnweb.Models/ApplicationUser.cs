@@ -13,7 +13,7 @@ namespace Learnweb.Models
 	public class ApplicationUser:IdentityUser
 	{
 		[Required]
-		public String Name { get; set; }
+		public string Name { get; set; }
 
 		public string? StreetAddress { get; set; }
 		public string? City { get; set; }
@@ -23,6 +23,8 @@ namespace Learnweb.Models
 		public int? CompanyId { get; set; }
 		[ForeignKey("CompanyId")]
 		[ValidateNever]
-		public Company company { get; set; }
+		public Company? Company { get; set; }
+		[NotMapped]
+		public string? Role { get; set; }
 	}
 }
