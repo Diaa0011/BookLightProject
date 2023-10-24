@@ -21,8 +21,8 @@ namespace Learnweb.DataAccess.Repository
 
         public void Update(Product obj)
         {
-            _db.products.Update(obj);
-            var objFromDb =_db.products.FirstOrDefault();
+            //_db.products.Update(obj);
+            var objFromDb =_db.products.Find(obj.Id);
             if (objFromDb != null)
             {
                 objFromDb.Title = obj.Title;
@@ -33,11 +33,11 @@ namespace Learnweb.DataAccess.Repository
                 objFromDb.Description = obj.Description;
                 objFromDb.CategoryId = obj.CategoryId;
                 objFromDb.Author = obj.Author;
-
-                if(objFromDb.ImageUrl!=null) 
-                {
-                    objFromDb.ImageUrl = obj.ImageUrl;
-                }
+                objFromDb.ProductImages = obj.ProductImages;
+                //if(objFromDb.ImageUrl!=null) 
+                //{
+                //    objFromDb.ImageUrl = obj.ImageUrl;
+                //}
             }
         }
 

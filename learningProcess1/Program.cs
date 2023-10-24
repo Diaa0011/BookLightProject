@@ -19,7 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddRoles<IdentityRole>().AddDefaultTokenProviders();
+builder.Services.AddScoped<RoleManager<IdentityRole>>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 
 var app = builder.Build();
 

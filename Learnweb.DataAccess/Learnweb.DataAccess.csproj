@@ -27,8 +27,4 @@
     <ProjectReference Include="..\Learnweb.Models\Learnweb.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

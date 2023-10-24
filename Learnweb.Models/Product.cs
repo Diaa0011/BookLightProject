@@ -15,7 +15,6 @@ namespace Learnweb.Models
         public int Id { get; set; }
         [Required]
         public string Title { get; set; }
-        [Required]
         public string Description { get; set; }
         [Required]
         public string ISBN { get; set; }
@@ -43,8 +42,7 @@ namespace Learnweb.Models
         [ValidateNever]
         public Category Category { get; set; }
         [ValidateNever]
-        public string ImageUrl { get; set; }
-        public int TestProperty { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
 
 
 

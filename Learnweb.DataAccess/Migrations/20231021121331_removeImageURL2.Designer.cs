@@ -4,6 +4,7 @@ using Learnweb.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Learnweb.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231021121331_removeImageURL2")]
+    partial class removeImageURL2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,19 +280,6 @@ namespace Learnweb.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Author = "Billy Spark",
-                            CategoryId = 1,
-                            Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
-                            ISBN = "SWD9999001",
-                            ListPrice = 99.0,
-                            Price = 90.0,
-                            Price100 = 80.0,
-                            Price50 = 85.0,
-                            Title = "Fortune of Time"
-                        },
-                        new
-                        {
                             Id = 2,
                             Author = "Nancy Hoover",
                             CategoryId = 1,
@@ -353,28 +343,6 @@ namespace Learnweb.DataAccess.Migrations
                             Price50 = 22.0,
                             Title = "Leaves and Wonders"
                         });
-                });
-
-            modelBuilder.Entity("Learnweb.Models.ProductImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Learnweb.Models.ShoppingCart", b =>
@@ -627,9 +595,6 @@ namespace Learnweb.DataAccess.Migrations
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
@@ -680,17 +645,6 @@ namespace Learnweb.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Learnweb.Models.ProductImage", b =>
-                {
-                    b.HasOne("Learnweb.Models.Product", "Product")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Learnweb.Models.ShoppingCart", b =>
@@ -770,11 +724,6 @@ namespace Learnweb.DataAccess.Migrations
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Learnweb.Models.Product", b =>
-                {
-                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }
