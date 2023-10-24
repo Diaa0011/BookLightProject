@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "learningProcess1", "learningProcess1\learningProcess1.csproj", "{7C1C21E7-44AD-41FF-A1C1-B1028F498670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookLight", "learningProcess1\BookLight.csproj", "{7C1C21E7-44AD-41FF-A1C1-B1028F498670}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Learnweb.DataAccess", "Learnweb.DataAccess\Learnweb.DataAccess.csproj", "{FB899D78-1E1E-4AA1-A7C6-F310B9D09C5B}"
 EndProject
