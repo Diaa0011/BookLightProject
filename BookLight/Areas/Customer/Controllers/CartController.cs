@@ -62,7 +62,6 @@ namespace learningProcess1.Areas.Customer.Controllers
 			ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
 			ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
 			ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
-
 			foreach (var cart in ShoppingCartVM.ShoppingCartList)
 			{
 				cart.Price = GetPriceBaseQuantity(cart);
@@ -125,7 +124,7 @@ namespace learningProcess1.Areas.Customer.Controllers
 				var options = new SessionCreateOptions
 				{
 					SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
-					CancelUrl = domain + "customer/cart/index",
+					CancelUrl = domain + $"customer/cart/index",
 					LineItems = new List<SessionLineItemOptions>(),
 					Mode = "payment",
 				};
@@ -168,10 +167,13 @@ namespace learningProcess1.Areas.Customer.Controllers
 					_unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
 					_unitOfWork.Save();
 				}
-			}
-			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.
+                HttpContext.Session.Clear();
+
+            }
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.
 				GetAll(u=>u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
-			_unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+			_unitOfWork.Save();
 			return View(id);
 		}
 		public IActionResult Plus(int cartId)

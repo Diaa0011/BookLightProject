@@ -48,7 +48,7 @@ namespace learningProcess1.Areas.Admin.Controllers
             orderHeaderFromDb.City = OrderVM.OrderHeader.City;
             orderHeaderFromDb.State = OrderVM.OrderHeader.State;
             orderHeaderFromDb.PostalCode = OrderVM.OrderHeader.PostalCode;
-			if(!string.IsNullOrEmpty(OrderVM.OrderHeader.Carrier))
+            if (!string.IsNullOrEmpty(OrderVM.OrderHeader.Carrier))
 			{
 				orderHeaderFromDb.Carrier = OrderVM.OrderHeader.Carrier;
 			}
@@ -124,7 +124,7 @@ namespace learningProcess1.Areas.Admin.Controllers
             var domain = "https://localhost:7246/";
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain + $"customer/order/PaymentConfirmation?orderHeaderId={OrderVM.OrderHeader.Id}",
+                SuccessUrl = domain + $"admin/order/PaymentConfirmation?orderHeaderId={OrderVM.OrderHeader.Id}",
                 CancelUrl = domain + $"admin/order/details?orderId={OrderVM.OrderHeader.Id}",
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",

@@ -12,18 +12,22 @@ namespace learningProcess1.ViewComponents
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IViewComponentResult> InvokeAsunc()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
             if (claim != null)
             {
-                if (HttpContext.Session.GetInt32(SD.SessionCart) == null)
+                if (HttpContext.Session.GetInt32(SD.SessionCart) != null)
+                {
+                    return View(HttpContext.Session.GetInt32(SD.SessionCart));
+                }
+                else 
                 {
                     HttpContext.Session.SetInt32(SD.SessionCart,
                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+                    return View(HttpContext.Session.GetInt32(SD.SessionCart));
                 }
-                return View(HttpContext.Session.GetInt32(SD.SessionCart));
             }
             else
             {
